@@ -44,7 +44,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!active) return;
 
       if (userError || !userData.user) {
-        if (userError) console.error("[NovelNest auth] Session validation failed", userError);
+        if (userError && userError.name !== "AuthSessionMissingError") {
+          console.error("[NovelNest auth] Session validation failed", userError);
+        }
         setSession(null);
         setLoading(false);
         return;
