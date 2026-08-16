@@ -39,11 +39,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!nextSession) setProfile(null);
     });
 
-    supabase.auth.getSession().then(({ data }) => {
+    const initializeAuth = async () => {
+      const { data: userData, error: userError } = await supabase.auth.getUser();
       if (!active) return;
-      setSession(data.session);
+
+      if (userError || !userData.user) {
+        if (userError && !userError.message.toLowerCase().includes("auth session missing")) {
+          console.error("[NovelNest auth] Session validation failed", userError);
+        }
+        setSession(null);
+        setLoading(false);
+        return;
+      }
+
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      if (!active) return;
+      if (sessionError) console.error("[NovelNest auth] Session retrieval failed", sessionError);
+      setSession(sessionData.session);
       setLoading(false);
-    });
+    };
+
+    void initializeAuth();
 
     return () => {
       active = false;
@@ -65,7 +81,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .select("*")
         .eq("id", userId)
         .maybeSingle();
-      if (!error) setProfile(data ?? null);
+      if (error) {
+        console.error("[NovelNest auth] Profile retrieval failed", error);
+      } else {
+        setProfile(data ?? null);
+      }
       setProfileLoading(false);
     },
     [userId],
@@ -97,11 +117,13 @@ export function useAuth() {
 export function friendlyAuthError(message: string): string {
   const m = message.toLowerCase();
   if (m.includes("invalid login credentials"))
-    return "That email and password don't match any reader here.";
+    return "That email and password don't match.";
   if (m.includes("email not confirmed"))
-    return "Please confirm your email first — check your inbox for the link.";
+    return "Please confirm your email before signing in.";
   if (m.includes("already registered") || m.includes("already been registered"))
-    return "A reader with this email already has a shelf. Try logging in.";
+    return "An account with this email already exists.";
+  if (m.includes("database error") || m.includes("saving new user"))
+    return "We couldn't finish creating your reader profile. Please try again.";
   if (m.includes("password should be at least")) return message;
   if (m.includes("rate limit") || m.includes("too many"))
     return "Too many attempts. Please pause a moment and try again.";
