@@ -61,6 +61,7 @@ function LoginPage() {
     setSubmitting(false);
 
     if (signInError) {
+      console.error("[NovelNest login] Password sign-in failed", signInError);
       const msg = friendlyAuthError(signInError.message);
       setError(msg);
       toast.error(msg);

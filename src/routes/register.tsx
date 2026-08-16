@@ -48,6 +48,7 @@ function RegisterPage() {
 
   const validate = () => {
     if (!password) return "Please enter a password.";
+    if (password.length < 6) return "Password must be at least 6 characters.";
     if (password !== confirmPassword) return "Passwords do not match.";
     if (!fullName.trim() || !username.trim() || !email.trim())
       return "Every field helps us bind your shelf — please fill them all in.";
@@ -70,19 +71,6 @@ function RegisterPage() {
 
     setSubmitting(true);
 
-    const { data: existing } = await supabase
-      .from("profiles")
-      .select("id")
-      .eq("username", username.trim())
-      .maybeSingle();
-    if (existing) {
-      setSubmitting(false);
-      const msg = "That username is already taken by another reader.";
-      setError(msg);
-      toast.error(msg);
-      return;
-    }
-
     const { data, error: signUpError } = await supabase.auth.signUp({
       email: email.trim(),
       password,
@@ -93,6 +81,7 @@ function RegisterPage() {
     });
 
     if (signUpError) {
+      console.error("[NovelNest signup] Auth account creation failed", signUpError);
       setSubmitting(false);
       const msg = friendlyAuthError(signUpError.message);
       setError(msg);
@@ -108,27 +97,28 @@ function RegisterPage() {
     }
 
     // The profile row is created automatically with the account; make sure it exists.
+    if (!data.user) {
+      console.error("[NovelNest signup] Auth returned no user and no error");
+      setSubmitting(false);
+      const msg = "We couldn't create your account. Please try again.";
+      setError(msg);
+      toast.error(msg);
+      return;
+    }
+
     const { data: profileRow, error: profileError } = await supabase
       .from("profiles")
-      .select("id")
-      .eq("id", data.user!.id)
+      .select("id, full_name, username, email")
+      .eq("id", data.user.id)
       .maybeSingle();
 
     if (profileError || !profileRow) {
-      const { error: insertError } = await supabase.from("profiles").insert({
-        id: data.user!.id,
-        full_name: fullName.trim(),
-        username: username.trim(),
-        email: email.trim(),
-      });
-      if (insertError) {
-        setSubmitting(false);
-        const msg =
-          "Your account was created, but we couldn't finish your profile. Log in and try again.";
-        setError(msg);
-        toast.error(msg);
-        return;
-      }
+      console.error("[NovelNest signup] Profile verification failed", profileError);
+      setSubmitting(false);
+      const msg = "We couldn't finish creating your reader profile. Please try again.";
+      setError(msg);
+      toast.error(msg);
+      return;
     }
 
     setSubmitting(false);
