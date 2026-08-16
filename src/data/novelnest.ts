@@ -1,45 +1,53 @@
-import cover1 from "@/assets/cover-1.jpg";
-import cover2 from "@/assets/cover-2.jpg";
-import cover3 from "@/assets/cover-3.jpg";
-import cover4 from "@/assets/cover-4.jpg";
 import type { Novel } from "@/components/NovelCard";
 
 export const novels: Novel[] = [
   {
+    id: "00000000-0000-0000-0000-000000000001",
     slug: "peer-e-kamil",
     title: "Peer-e-Kamil",
     author: "Umera Ahmed",
-    genre: "Romance",
+    genres: ["Romance"],
     rating: 4.8,
-    readers: "1,245",
-    cover: cover1,
+    readers_label: "1,245",
+    cover_url: "/cover-1.jpg",
+    description:
+      "A story readers keep returning to — as much for the conversations it starts as for the pages themselves.",
   },
   {
+    id: "00000000-0000-0000-0000-000000000002",
     slug: "jannat-kay-pattay",
     title: "Jannat Kay Pattay",
     author: "Nimra Ahmed",
-    genre: "Drama",
+    genres: ["Drama"],
     rating: 4.6,
-    readers: "986",
-    cover: cover2,
+    readers_label: "986",
+    cover_url: "/cover-2.jpg",
+    description:
+      "A story readers keep returning to — as much for the conversations it starts as for the pages themselves.",
   },
   {
+    id: "00000000-0000-0000-0000-000000000003",
     slug: "the-lamplighter-street",
     title: "The Lamplighter's Street",
     author: "Iman Farooq",
-    genre: "Mystery",
+    genres: ["Mystery"],
     rating: 4.4,
-    readers: "742",
-    cover: cover3,
+    readers_label: "742",
+    cover_url: "/cover-3.jpg",
+    description:
+      "A story readers keep returning to — as much for the conversations it starts as for the pages themselves.",
   },
   {
+    id: "00000000-0000-0000-0000-000000000004",
     slug: "the-cartographers-daughter",
     title: "The Cartographer's Daughter",
     author: "Elena Marchetti",
-    genre: "Fantasy",
+    genres: ["Fantasy"],
     rating: 4.7,
-    readers: "1,108",
-    cover: cover4,
+    readers_label: "1,108",
+    cover_url: "/cover-4.jpg",
+    description:
+      "A story readers keep returning to — as much for the conversations it starts as for the pages themselves.",
   },
 ];
 
