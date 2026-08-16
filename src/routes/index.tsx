@@ -63,8 +63,10 @@ function SectionHeading({
   );
 }
 
+import { useSuspenseQuery } from "@tanstack/react-query";
+
 function Index() {
-  const { data: novels } = Route.useQuery({ queryKey: ["novels"], queryFn: () => getNovels({ data: undefined }) });
+  const { data: novels } = useSuspenseQuery({ queryKey: ["novels"], queryFn: () => getNovels({ data: undefined }) });
 
   return (
     <div className="min-h-screen">
