@@ -46,7 +46,10 @@ function ReadingRoomPage() {
     queryFn: () => fetchNovels({ data: undefined }),
   });
 
-  const savedNovels = items?.map((item) => novels.find((n) => n.id === item.novel_id)).filter(Boolean) ?? [];
+  const savedNovels = items?.flatMap((item) => {
+    const novel = novels.find((n) => n.id === item.novel_id);
+    return novel ? [novel] : [];
+  }) ?? [];
 
   return (
     <div className="min-h-screen">
