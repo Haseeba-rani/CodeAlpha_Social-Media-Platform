@@ -64,7 +64,6 @@ function SectionHeading({
   );
 }
 
-import { useSuspenseQuery } from "@tanstack/react-query";
 
 function Index() {
   const { data: novels } = useSuspenseQuery({ queryKey: ["novels"], queryFn: () => getNovels({ data: undefined }) });
