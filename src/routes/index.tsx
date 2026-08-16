@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { BookOpen, MessagesSquare, PenLine, Sparkles, Users } from "lucide-react";
 import { Hero } from "@/components/Hero";
 import { NovelCard } from "@/components/NovelCard";
