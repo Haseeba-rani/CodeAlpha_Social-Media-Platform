@@ -3,12 +3,14 @@ import { Star, Users } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Reveal } from "@/components/Reveal";
-import { discussion, novels } from "@/data/novelnest";
+import { ReadingListButton } from "@/components/ReadingListButton";
+import { discussion } from "@/data/novelnest";
+import { getNovelBySlug } from "@/lib/novels.functions";
 
 export const Route = createFileRoute("/novels/$slug")({
   component: NovelDetailPage,
-  loader: ({ params }) => {
-    const novel = novels.find((n) => n.slug === params.slug);
+  loader: async ({ params }) => {
+    const novel = await getNovelBySlug({ data: { slug: params.slug } });
     if (!novel) throw notFound();
     return { novel };
   },
@@ -26,6 +28,8 @@ export const Route = createFileRoute("/novels/$slug")({
           property: "og:description",
           content: `See who is reading ${title} and what they are saying.`,
         },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
       ],
     };
   },
@@ -41,14 +45,14 @@ function NovelDetailPage() {
         <div className="grid gap-8 sm:grid-cols-[220px_1fr]">
           <Reveal variant="scale">
             <img
-              src={novel.cover}
+              src={novel.cover_url}
               alt={`Cover of ${novel.title}`}
               className="w-full rounded-2xl object-cover shadow-lift"
             />
           </Reveal>
           <Reveal delay={120}>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-wine">
-              {novel.genre}
+              {novel.genres.join(" · ")}
             </p>
             <h1 className="mt-2 font-display text-5xl text-foreground">{novel.title}</h1>
             <p className="mt-1 text-sm text-muted-foreground">{novel.author}</p>
@@ -59,20 +63,14 @@ function NovelDetailPage() {
               </span>
               <span className="inline-flex items-center gap-1.5 text-muted-foreground">
                 <Users className="size-4" />
-                {novel.readers} readers discussing
+                {novel.readers_label} readers discussing
               </span>
             </div>
             <p className="mt-5 text-[15px] leading-relaxed text-muted-foreground">
-              A story readers keep returning to — as much for the conversations it starts as for
-              the pages themselves.
+              {novel.description}
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                to="/register"
-                className="inline-flex h-11 items-center rounded-xl bg-gold px-7 text-sm font-medium text-gold-foreground shadow-page transition-all duration-300 hover:-translate-y-0.5 hover:shadow-glow"
-              >
-                Add to my shelf
-              </Link>
+              <ReadingListButton novelId={novel.id} />
               <Link
                 to="/novels"
                 className="inline-flex h-11 items-center rounded-xl border border-gold/50 px-7 text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 hover:border-gold hover:bg-gold/10"
