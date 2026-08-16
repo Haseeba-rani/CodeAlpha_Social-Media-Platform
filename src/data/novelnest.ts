@@ -1,47 +1,4 @@
-import cover1 from "@/assets/cover-1.jpg";
-import cover2 from "@/assets/cover-2.jpg";
-import cover3 from "@/assets/cover-3.jpg";
-import cover4 from "@/assets/cover-4.jpg";
-import type { Novel } from "@/components/NovelCard";
-
-export const novels: Novel[] = [
-  {
-    slug: "peer-e-kamil",
-    title: "Peer-e-Kamil",
-    author: "Umera Ahmed",
-    genre: "Romance",
-    rating: 4.8,
-    readers: "1,245",
-    cover: cover1,
-  },
-  {
-    slug: "jannat-kay-pattay",
-    title: "Jannat Kay Pattay",
-    author: "Nimra Ahmed",
-    genre: "Drama",
-    rating: 4.6,
-    readers: "986",
-    cover: cover2,
-  },
-  {
-    slug: "the-lamplighter-street",
-    title: "The Lamplighter's Street",
-    author: "Iman Farooq",
-    genre: "Mystery",
-    rating: 4.4,
-    readers: "742",
-    cover: cover3,
-  },
-  {
-    slug: "the-cartographers-daughter",
-    title: "The Cartographer's Daughter",
-    author: "Elena Marchetti",
-    genre: "Fantasy",
-    rating: 4.7,
-    readers: "1,108",
-    cover: cover4,
-  },
-];
+export const novels = [];
 
 export type Reader = {
   handle: string;

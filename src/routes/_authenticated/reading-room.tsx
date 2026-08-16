@@ -1,12 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { BookOpen, MessagesSquare, Sparkles } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Reveal } from "@/components/Reveal";
 import { NovelCard } from "@/components/NovelCard";
 import { ParticleField } from "@/components/ParticleField";
-import { novels } from "@/data/novelnest";
 import { useAuth } from "@/lib/auth";
+import { getReadingList } from "@/lib/reading-list.functions";
+import { getNovels } from "@/lib/novels.functions";
 
 export const Route = createFileRoute("/_authenticated/reading-room")({
   component: ReadingRoomPage,
@@ -30,6 +33,23 @@ export const Route = createFileRoute("/_authenticated/reading-room")({
 
 function ReadingRoomPage() {
   const { profile, profileLoading } = useAuth();
+  const fetchList = useServerFn(getReadingList);
+  const fetchNovels = useServerFn(getNovels);
+
+  const { data: items, isLoading: listLoading } = useQuery({
+    queryKey: ["reading-room-list"],
+    queryFn: () => fetchList({ data: undefined }),
+  });
+
+  const { data: novels } = useSuspenseQuery({
+    queryKey: ["novels"],
+    queryFn: () => fetchNovels({ data: undefined }),
+  });
+
+  const savedNovels = items?.flatMap((item) => {
+    const novel = novels.find((n) => n.id === item.novel_id);
+    return novel ? [novel] : [];
+  }) ?? [];
 
   return (
     <div className="min-h-screen">
@@ -82,19 +102,44 @@ function ReadingRoomPage() {
         <section className="mx-auto max-w-6xl px-5 py-16">
           <Reveal className="max-w-2xl">
             <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-wine">
-              <BookOpen className="size-4" /> On your shelf
+              <BookOpen className="size-4" /> Your reading list
             </p>
             <h2 className="mt-2 font-display text-4xl leading-tight text-foreground sm:text-5xl">
-              Novels gathering readers right now
+              Novels you have saved
             </h2>
           </Reveal>
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {novels.map((novel, i) => (
-              <Reveal key={novel.slug} delay={i * 90}>
-                <NovelCard novel={novel} />
-              </Reveal>
-            ))}
-          </div>
+
+          {listLoading ? (
+            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="aspect-2/3 animate-pulse rounded-2xl bg-muted" />
+              ))}
+            </div>
+          ) : savedNovels.length > 0 ? (
+            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {savedNovels.map((novel, i) => (
+                <Reveal key={novel.id} delay={i * 90}>
+                  <NovelCard novel={novel} />
+                </Reveal>
+              ))}
+            </div>
+          ) : (
+            <Reveal delay={120}>
+              <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-page">
+                <h3 className="font-display text-2xl text-foreground">Your shelf is empty</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  Browse novels and tap <strong>Save to reading list</strong> to build your personal
+                  shelf.
+                </p>
+                <Link
+                  to="/novels"
+                  className="mt-5 inline-flex h-11 items-center rounded-xl bg-gold px-7 text-sm font-medium text-gold-foreground shadow-page transition-all duration-300 hover:-translate-y-0.5 hover:shadow-glow"
+                >
+                  Explore stories
+                </Link>
+              </div>
+            </Reveal>
+          )}
 
           <Reveal delay={120}>
             <div className="mt-12 rounded-2xl border border-border bg-card p-6 shadow-page">

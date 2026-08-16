@@ -4,13 +4,15 @@ import { useRef, useState } from "react";
 import { useIsCoarsePointer, usePrefersReducedMotion } from "@/hooks/use-motion";
 
 export type Novel = {
+  id: string;
   slug: string;
   title: string;
   author: string;
-  genre: string;
+  genres: string[];
   rating: number;
-  readers: string;
-  cover: string;
+  readers_label: string;
+  cover_url: string;
+  description: string;
 };
 
 export function NovelCard({ novel }: { novel: Novel }) {
@@ -27,6 +29,8 @@ export function NovelCard({ novel }: { novel: Novel }) {
     const py = (e.clientY - r.top) / r.height - 0.5;
     setTilt({ x: -py * 6, y: px * 8 });
   };
+
+  const genreLabel = novel.genres[0] ?? "Novel";
 
   return (
     <div
@@ -46,7 +50,7 @@ export function NovelCard({ novel }: { novel: Novel }) {
       >
         <div className="sheen relative overflow-hidden rounded-xl bg-muted">
           <img
-            src={novel.cover}
+            src={novel.cover_url}
             alt={`Cover of ${novel.title} by ${novel.author}`}
             loading="lazy"
             width={640}
@@ -55,7 +59,7 @@ export function NovelCard({ novel }: { novel: Novel }) {
           />
           <div className="pointer-events-none absolute inset-0 bg-midnight-gradient opacity-0 transition-opacity duration-500 group-hover:opacity-25" />
           <span className="absolute left-2 top-2 rounded-full bg-background/85 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-wine backdrop-blur transition-transform duration-500 group-hover:-translate-y-0.5">
-            {novel.genre}
+            {genreLabel}
           </span>
         </div>
         <div className="px-1 pb-1 pt-3">
@@ -84,7 +88,7 @@ export function NovelCard({ novel }: { novel: Novel }) {
             </span>
             <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
               <Users className="size-3" />
-              {novel.readers}
+              {novel.readers_label}
             </span>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { BookOpen, MessagesSquare, PenLine, Sparkles, Users } from "lucide-react";
 import { Hero } from "@/components/Hero";
 import { NovelCard } from "@/components/NovelCard";
@@ -9,10 +10,15 @@ import { Reveal } from "@/components/Reveal";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SoulmateCard } from "@/components/SoulmateCard";
-import { discussion, novels, readers, soulmates } from "@/data/novelnest";
+import { discussion, readers, soulmates } from "@/data/novelnest";
+import { getNovels } from "@/lib/novels.functions";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  loader: async ({ context }) => {
+    await context.queryClient.ensureQueryData({ queryKey: ["novels"], queryFn: () => getNovels({ data: undefined }) });
+    return {};
+  },
   head: () => ({
     meta: [
       { title: "NovelNest — A Social World for Novel Readers" },
@@ -58,7 +64,10 @@ function SectionHeading({
   );
 }
 
+
 function Index() {
+  const { data: novels } = useSuspenseQuery({ queryKey: ["novels"], queryFn: () => getNovels({ data: undefined }) });
+
   return (
     <div className="min-h-screen">
       <SiteHeader />
@@ -75,7 +84,7 @@ function Index() {
               copy="Shelves shaped by real conversations, not algorithms shouting at you. Hover a cover and it leans toward you like a book pulled halfway off the shelf."
             />
             <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-              {novels.map((n, i) => (
+              {novels?.map((n, i) => (
                 <Reveal key={n.slug} delay={i * 90} variant="scale">
                   <NovelCard novel={n} />
                 </Reveal>

@@ -137,6 +137,8 @@ export type Database = {
           genres: string[]
           id: string
           rating: number
+          readers_label: string | null
+          slug: string | null
           title: string
         }
         Insert: {
@@ -147,6 +149,8 @@ export type Database = {
           genres?: string[]
           id?: string
           rating?: number
+          readers_label?: string | null
+          slug?: string | null
           title: string
         }
         Update: {
@@ -157,6 +161,8 @@ export type Database = {
           genres?: string[]
           id?: string
           rating?: number
+          readers_label?: string | null
+          slug?: string | null
           title?: string
         }
         Relationships: []
@@ -234,6 +240,41 @@ export type Database = {
           username?: string
         }
         Relationships: []
+      }
+      reading_list: {
+        Row: {
+          created_at: string
+          id: string
+          novel_id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          novel_id: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          novel_id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reading_list_novel_id_fkey"
+            columns: ["novel_id"]
+            isOneToOne: false
+            referencedRelation: "novels"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       reviews: {
         Row: {
