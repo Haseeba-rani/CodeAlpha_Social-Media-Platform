@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedReadingRoomRouteImport } from './routes/_authenticated/reading-room'
@@ -38,6 +39,11 @@ const LoginRoute = LoginRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedNotificationsRoute =
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/search': typeof SearchRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/reading-room': typeof AuthenticatedReadingRoomRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/search': typeof SearchRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/reading-room': typeof AuthenticatedReadingRoomRoute
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/search': typeof SearchRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/reading-room': typeof AuthenticatedReadingRoomRoute
@@ -122,6 +131,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/search'
     | '/notifications'
     | '/profile'
     | '/reading-room'
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/search'
     | '/notifications'
     | '/profile'
     | '/reading-room'
@@ -147,6 +158,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/login'
     | '/register'
+    | '/search'
     | '/_authenticated/notifications'
     | '/_authenticated/profile'
     | '/_authenticated/reading-room'
@@ -161,6 +173,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  SearchRoute: typeof SearchRoute
   NovelsSlugRoute: typeof NovelsSlugRoute
   ReadersHandleRoute: typeof ReadersHandleRoute
   NovelsIndexRoute: typeof NovelsIndexRoute
@@ -195,6 +208,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/notifications': {
@@ -269,6 +289,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  SearchRoute: SearchRoute,
   NovelsSlugRoute: NovelsSlugRoute,
   ReadersHandleRoute: ReadersHandleRoute,
   NovelsIndexRoute: NovelsIndexRoute,

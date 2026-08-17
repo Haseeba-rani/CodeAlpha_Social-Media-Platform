@@ -167,6 +167,71 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          actor_id: string
+          comment_id: string | null
+          created_at: string
+          id: string
+          novel_id: string | null
+          post_id: string | null
+          read: boolean
+          type: string
+          user_id: string
+        }
+        Insert: {
+          actor_id: string
+          comment_id?: string | null
+          created_at?: string
+          id?: string
+          novel_id?: string | null
+          post_id?: string | null
+          read?: boolean
+          type: string
+          user_id: string
+        }
+        Update: {
+          actor_id?: string
+          comment_id?: string | null
+          created_at?: string
+          id?: string
+          novel_id?: string | null
+          post_id?: string | null
+          read?: boolean
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_actor_id_fkey"
+            columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_novel_id_fkey"
+            columns: ["novel_id"]
+            isOneToOne: false
+            referencedRelation: "novels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           content: string

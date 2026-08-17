@@ -4,13 +4,13 @@ import { BookOpen, MessagesSquare, PenLine, Sparkles, Users } from "lucide-react
 import { Hero } from "@/components/Hero";
 import { NovelCard } from "@/components/NovelCard";
 import { ParticleField } from "@/components/ParticleField";
-import { PostCard } from "@/components/PostCard";
-import { ReaderCard } from "@/components/ReaderCard";
+import { DemoPostCard } from "@/components/DemoPostCard";
+import { DemoReaderCard } from "@/components/DemoReaderCard";
 import { Reveal } from "@/components/Reveal";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
-import { SoulmateCard } from "@/components/SoulmateCard";
-import { discussion, readers, soulmates } from "@/data/novelnest";
+import { ReadingSoulmatesSection } from "@/components/ReadingSoulmatesSection";
+import { discussion, readers } from "@/data/novelnest";
 import { getNovels } from "@/lib/novels.functions";
 
 export const Route = createFileRoute("/")({
@@ -112,7 +112,7 @@ function Index() {
               copy="Post a thought mid-chapter, drop a review at the end, and watch the replies unfold. Likes bloom, comments slide open one after another."
             />
             <Reveal delay={140} variant="blur">
-              <PostCard />
+              <DemoPostCard />
             </Reveal>
           </div>
         </section>
@@ -129,7 +129,7 @@ function Index() {
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {readers.map((r, i) => (
                 <Reveal key={r.handle} delay={i * 110} variant="scale">
-                  <ReaderCard reader={r} />
+                  <DemoReaderCard reader={r} />
                 </Reveal>
               ))}
             </div>
@@ -137,29 +137,7 @@ function Index() {
         </section>
 
         {/* Soulmates */}
-        <section className="relative overflow-hidden bg-midnight-gradient py-24 text-primary-foreground">
-          <ParticleField count={14} seed={9} />
-          <div className="relative mx-auto max-w-6xl px-5">
-            <Reveal className="max-w-2xl">
-              <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-gold">
-                <Sparkles className="size-4" />
-                Reading soulmates
-              </p>
-              <h2 className="mt-2 font-display text-4xl leading-tight sm:text-5xl">
-                The people your bookshelf keeps pointing to
-              </h2>
-              <p className="mt-3 text-[15px] leading-relaxed opacity-85">
-                Match scores count up as you scroll, the way a shelf slowly reveals what you have
-                in common.
-              </p>
-            </Reveal>
-            <div className="mt-10 grid gap-4 text-foreground sm:grid-cols-2 lg:grid-cols-3">
-              {soulmates.map((s, i) => (
-                <SoulmateCard key={s.name} soulmate={s} delay={i * 120} />
-              ))}
-            </div>
-          </div>
-        </section>
+        <ReadingSoulmatesSection />
 
         {/* Community */}
         <section id="community" className="scroll-mt-20 bg-background py-24">
