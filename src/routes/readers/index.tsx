@@ -81,16 +81,18 @@ function ReadersPage() {
           setFollowingIds(new Set((myFollows ?? []).map((f) => f.following_id)));
         }
 
-        const readerList: ReaderProfile[] = profiles.map((p) => ({
-          id: p.id,
-          full_name: p.full_name ?? "",
-          username: p.username ?? "",
-          bio: p.bio ?? "",
-          avatar_url: p.avatar_url ?? null,
-          favorite_genres: p.favorite_genres ?? [],
-          currently_reading: p.currently_reading ?? "",
-          followerCount: followerCounts.get(p.id) ?? 0,
-        }));
+        const readerList: ReaderProfile[] = profiles
+          .filter((p) => p.username && p.full_name && (p.bio?.trim() || p.avatar_url || (p.favorite_genres && p.favorite_genres.length > 0)))
+          .map((p) => ({
+            id: p.id,
+            full_name: p.full_name ?? "",
+            username: p.username ?? "",
+            bio: p.bio ?? "",
+            avatar_url: p.avatar_url ?? null,
+            favorite_genres: p.favorite_genres ?? [],
+            currently_reading: p.currently_reading ?? "",
+            followerCount: followerCounts.get(p.id) ?? 0,
+          }));
 
         setReaders(readerList);
       } catch (err) {
