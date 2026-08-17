@@ -1,9 +1,8 @@
 import { Plus, Check, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { addToReadingList, removeFromReadingList, getReadingList } from "@/lib/reading-list.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 
 export function ReadingListButton({ novelId }: { novelId: string }) {
@@ -11,22 +10,50 @@ export function ReadingListButton({ novelId }: { novelId: string }) {
   const queryClient = useQueryClient();
   const [showLoginHint, setShowLoginHint] = useState(false);
 
-  const fetchList = useServerFn(getReadingList);
-  const addItem = useServerFn(addToReadingList);
-  const removeItem = useServerFn(removeFromReadingList);
-
   const { data: items } = useQuery({
-    queryKey: ["reading-list"],
-    queryFn: () => fetchList({ data: undefined }),
+    queryKey: ["reading-list", user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+      const { data, error } = await supabase
+        .from("reading_list")
+        .select("id, novel_id, created_at")
+        .eq("user_id", user.id);
+      if (error) {
+        console.error("[ReadingList] Query error:", error);
+        throw error;
+      }
+      return data ?? [];
+    },
     enabled: !!user,
   });
 
   const isSaved = items?.some((item) => item.novel_id === novelId);
 
   const addMutation = useMutation({
-    mutationFn: () => addItem({ data: { novelId } }),
+    mutationFn: async () => {
+      if (!user) throw new Error("Please sign in to save novels.");
+      const { data, error } = await supabase
+        .from("reading_list")
+        .insert({
+          user_id: user.id,
+          novel_id: novelId,
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error("[ReadingList] Add error:", error);
+        if (error.code === "23505") {
+          // Already saved, treat as success
+          return { alreadySaved: true };
+        }
+        throw new Error(error.message || "Could not save to reading list. Please try again.");
+      }
+      return data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reading-list"] });
+      queryClient.invalidateQueries({ queryKey: ["reading-room-list"] });
       toast.success("Saved to your reading list!");
     },
     onError: (err) => {
@@ -36,9 +63,22 @@ export function ReadingListButton({ novelId }: { novelId: string }) {
   });
 
   const removeMutation = useMutation({
-    mutationFn: () => removeItem({ data: { novelId } }),
+    mutationFn: async () => {
+      if (!user) throw new Error("Please sign in.");
+      const { error } = await supabase
+        .from("reading_list")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("novel_id", novelId);
+
+      if (error) {
+        console.error("[ReadingList] Remove error:", error);
+        throw new Error(error.message || "Could not remove from reading list. Please try again.");
+      }
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reading-list"] });
+      queryClient.invalidateQueries({ queryKey: ["reading-room-list"] });
       toast.success("Removed from your reading list.");
     },
     onError: (err) => {
@@ -93,4 +133,3 @@ export function ReadingListButton({ novelId }: { novelId: string }) {
     </div>
   );
 }
-

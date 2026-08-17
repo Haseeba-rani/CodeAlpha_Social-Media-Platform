@@ -1,6 +1,16 @@
 -- ============================================================
--- NovelNest — Add 4 Real Novels to Catalog
+-- NovelNest — Add 4 Real Novels to Catalog & Enable Insert
 -- ============================================================
+
+GRANT SELECT, INSERT ON public.novels TO authenticated;
+GRANT SELECT ON public.novels TO anon;
+GRANT ALL ON public.novels TO service_role;
+
+DROP POLICY IF EXISTS "Allow authenticated users to insert novels" ON public.novels;
+CREATE POLICY "Allow authenticated users to insert novels"
+  ON public.novels FOR INSERT
+  TO authenticated
+  WITH CHECK (true);
 
 INSERT INTO public.novels (id, title, author, slug, rating, readers_label, genres, cover_url, description)
 VALUES
@@ -48,10 +58,9 @@ VALUES
     '/cover-8.jpg',
     'A comforting and deeply relatable collection of poetry and prose for anyone healing from heartbreak, unspoken grief, and learning to let go. Rithvik Singh''s gentle, honest words remind us that choosing self-worth and moving on is an act of courage, offering solace to weary hearts discovering light after painful goodbyes.'
   )
-ON CONFLICT (id) DO UPDATE SET
+ON CONFLICT (slug) DO UPDATE SET
   title = EXCLUDED.title,
   author = EXCLUDED.author,
-  slug = EXCLUDED.slug,
   rating = EXCLUDED.rating,
   readers_label = EXCLUDED.readers_label,
   genres = EXCLUDED.genres,

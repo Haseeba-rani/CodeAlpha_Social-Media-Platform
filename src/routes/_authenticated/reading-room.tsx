@@ -315,12 +315,24 @@ function FeedSection({ currentUserId }: { currentUserId: string }) {
 
 function ReadingRoomPage() {
   const { profile, profileLoading, user } = useAuth();
-  const fetchList = useServerFn(getReadingList);
   const fetchNovels = useServerFn(getNovels);
 
   const { data: items, isLoading: listLoading } = useQuery({
-    queryKey: ["reading-room-list"],
-    queryFn: () => fetchList({ data: undefined }),
+    queryKey: ["reading-room-list", user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+      const { data, error } = await supabase
+        .from("reading_list")
+        .select("id, novel_id, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+      if (error) {
+        console.error("[ReadingRoom] Error loading reading list:", error);
+        throw error;
+      }
+      return data ?? [];
+    },
+    enabled: !!user,
   });
 
   const { data: novels } = useSuspenseQuery({
