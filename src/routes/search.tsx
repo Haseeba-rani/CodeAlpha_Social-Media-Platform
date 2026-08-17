@@ -19,6 +19,7 @@ import { ParticleField } from "@/components/ParticleField";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
+import { CATALOG_NOVELS } from "@/lib/novels.functions";
 
 // ─── Search Schema & Route ───────────────────────────────────────────────────
 
@@ -140,7 +141,7 @@ function SearchPage() {
         if (readersRes.error) throw new Error(readersRes.error.message);
 
         // Process novels
-        const foundNovels: Novel[] = (novelsRes.data ?? []).map((n) => ({
+        const dbNovels: Novel[] = (novelsRes.data ?? []).map((n) => ({
           id: n.id,
           slug: n.slug ?? n.id,
           title: n.title,
@@ -151,6 +152,31 @@ function SearchPage() {
           cover_url: n.cover_url ?? "/cover-1.jpg",
           description: n.description,
         }));
+
+        const existingSlugs = new Set(dbNovels.map((n) => n.slug));
+        const lowerQ = cleanQuery.toLowerCase();
+        const matchingCatalog: Novel[] = CATALOG_NOVELS
+          .filter(
+            (n) =>
+              !existingSlugs.has(n.slug) &&
+              (n.title.toLowerCase().includes(lowerQ) ||
+                n.author.toLowerCase().includes(lowerQ) ||
+                n.description.toLowerCase().includes(lowerQ) ||
+                n.genres.some((g) => g.toLowerCase().includes(lowerQ)))
+          )
+          .map((n) => ({
+            id: n.id,
+            slug: n.slug,
+            title: n.title,
+            author: n.author,
+            genres: n.genres,
+            rating: n.rating,
+            readers_label: n.readers_label,
+            cover_url: n.cover_url,
+            description: n.description,
+          }));
+
+        const foundNovels: Novel[] = [...dbNovels, ...matchingCatalog];
 
         // Process readers with follower counts
         const rawProfiles = readersRes.data ?? [];
