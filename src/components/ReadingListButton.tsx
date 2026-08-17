@@ -107,7 +107,7 @@ export function ReadingListButton({ novelId }: { novelId: string }) {
       <button
         onClick={handleClick}
         disabled={busy}
-        className={`inline-flex h-11 items-center gap-2 rounded-xl px-7 text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 ${
+        className={`inline-flex h-11 cursor-pointer items-center gap-2 rounded-xl px-7 text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 ${
           isSaved
             ? "bg-secondary text-foreground border border-border hover:bg-secondary/80"
             : "bg-gold text-gold-foreground shadow-page hover:shadow-glow"

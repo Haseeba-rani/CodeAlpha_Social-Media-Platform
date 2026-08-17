@@ -1,550 +1,264 @@
-# Remix of Remix of Literary Lumina
+# NovelNest — CodeAlpha Social Mini App
 
-https://lovable.dev/projects/8d290e18-bc4f-40e1-9e64-08de997ab2b1?magic_link=mc_191814b3-c48e-43e2-957c-69068ebbef15
-clone this here and aply the prompt on it given below 
-NovelNest — Interactive UI & Animation Upgrade
+NovelNest is a social reading platform that combines novel discovery,
+personal reading lists, reviews, and reader-to-reader interaction in one
+modern literary experience.
 
-The current NovelNest landing page has a strong visual foundation and I want to KEEP the existing overall design, layout, color palette, typography, book aesthetic, sections, and content.
+The application allows readers to discover novels, save books to their
+reading list, share thoughts and reviews, discover other readers, follow
+them, and receive notifications when other users interact with their
+content.
 
-Do NOT redesign the website from scratch.
+---
 
-Instead, transform the current mostly-static landing page into a highly interactive, elegant, cinematic literary experience.
+## 📖 About the Project
 
-The goal is:
+NovelNest is designed around three main ideas:
 
-When a visitor opens NovelNest, it should feel like they are entering a living world of stories — not simply looking at a static website.
+📚 Discover stories  
+👥 Connect with readers  
+💬 Share thoughts
 
-Prioritize smooth, premium, subtle animations and meaningful interactions.
+Instead of being only a digital book catalogue, NovelNest provides a
+social environment where readers can discover books and connect with people
+who share similar interests.
 
-1. HERO TEXT — MAKE IT FEEL ALIVE
+---
 
-The current hero contains:
+# ✨ Features
 
-NovelNest
+## 🔐 Authentication
 
-Enter a World of Stories and Connections.
+- User registration
+- User login
+- Logout
+- Protected authenticated routes
+- Session persistence
+- Authentication state restoration
+- Authenticated user-specific data
 
-Keep the wording exactly as it is.
+Authentication is powered by Supabase Auth.
 
-However, animate the tagline when the page loads.
+---
 
-Use a sophisticated word-by-word reveal animation:
+## 👤 Reader Profiles
 
-Enter → a → World → of → Stories → and → Connections.
+Each reader can create and manage a personal profile containing:
 
-Each word should smoothly fade/slide into position with a small staggered delay.
+- Full name
+- Username / handle
+- Profile picture
+- Biography
+- Favourite genres
+- Favourite authors
+- Currently reading
 
-Do NOT repeatedly loop the animation.
+Readers can discover and open other users' public profiles.
 
-After the initial entrance animation, the text should remain stable.
+Public profile pages do not expose users' email addresses.
 
-Also animate the "NovelNest" heading with a subtle fade-up and slight blur-to-sharp transition.
+---
 
-The small badge above the heading should gently fade in after the main visual appears.
+## 🔎 Reader Search
 
-2. HERO BOOK — MAKE THE BOOK FEEL ALIVE
+Readers can search for other users using:
 
-The large open-book visual in the hero should no longer feel completely static.
+- Reader name
+- Username / handle
 
-Add subtle cinematic motion:
+After finding another reader, a user can open their public profile and
+interact with them.
 
-very gentle floating movement
+---
 
-subtle parallax when the mouse moves
+## 🤝 Reader-to-Reader Interaction
 
-slight perspective movement
+Authenticated readers can:
 
-extremely subtle page movement
+- Follow other readers
+- Unfollow readers
+- View follower counts
+- View following information
+- Discover followers
+- Receive follow notifications
 
-soft light/glow passing across the book occasionally
+The reader-to-reader interaction was tested using two separate
+authenticated users against the live Supabase backend.
 
-small floating paper/page particles around the book
+---
 
-The animation must be slow and elegant.
+## 🔔 Notifications
 
-Do NOT make the entire book spin or bounce.
+NovelNest includes a complete notification system.
 
-It should feel like a magical open book that is quietly alive.
+Supported notification types include:
 
-3. MOUSE PARALLAX EFFECT
+- Follow notifications
+- Like notifications
+- Comment notifications
 
-Add a subtle mouse-following parallax effect to the hero.
+Users can:
 
-When the user moves the cursor:
+- View notifications
+- Filter notifications
+- See unread notifications
+- Mark notifications as read
+- Delete notifications
+- View the unread notification count
 
-background moves slightly
+Self-notifications are prevented.
 
-book moves slightly in the opposite direction
+---
 
-decorative particles move at different speeds
+## 📝 Social Feed
 
-text remains mostly stable
+Authenticated readers can:
 
-Use multiple depth layers so the hero feels dimensional.
+- Create posts
+- View posts
+- Like posts
+- Unlike posts
+- Add comments
+- Delete their own comments
+- Edit their own posts
+- Delete their own posts
 
-Keep the movement extremely subtle.
+The feed supports realtime updates through Supabase.
 
-On mobile devices, disable mouse-based parallax and use gentle ambient animation instead.
+---
 
-4. FLOATING STORY PARTICLES
+## 📚 Novel Discovery
 
-The small particles in the hero should be more visible and intentional.
+The novel section allows users to discover and explore books.
 
-Create a small number of elegant floating particles inspired by:
+Novel pages can contain:
 
-tiny stars
+- Book cover
+- Title
+- Author
+- Genre
+- Rating
+- Synopsis
+- Reviews
+- Reading-list controls
 
-paper fragments
+---
 
-book-page pieces
+## 📌 Reading List
 
-tiny golden dust particles
+Authenticated readers can save novels to their personal reading list.
 
-They should:
+Users can:
 
-slowly drift
+- Add novels to their reading list
+- Remove novels from their reading list
+- View saved novels in the Reading Room
 
-have different sizes
+Reading-list data is persisted in the Supabase database.
 
-have different opacity
+---
 
-move at different speeds
+## ⭐ Reviews & Thoughts
 
-occasionally fade slightly
+Readers can share their opinions about novels.
 
-Do not overcrowd the screen.
+Users can:
 
-The effect should feel like magical literary dust, not a particle-heavy technology website.
+- Give a star rating
+- Write a thought/review
+- Publish a review
+- Edit their review
+- Delete their review
 
-5. HERO BUTTON INTERACTIONS
+Reviews are stored in the live Supabase database.
 
-Make both buttons interactive.
+---
 
-Join NovelNest
+## ❤️ Likes & Comments
 
-On hover:
+The social feed supports:
 
-subtle lift
+- Like / unlike
+- Optimistic UI updates
+- Comment creation
+- Comment deletion
+- Realtime updates
+- Social notifications
 
-soft glow
+---
 
-slight scale
+## 🔍 Search
 
-arrow/icon movement if appropriate
+The application provides search functionality for:
 
-On click:
+- Novels
+- Readers
 
-smooth transition toward the registration experience
+Search results are retrieved from the live database.
 
-Explore Stories
+---
 
-On hover:
+## 📱 Responsive Design
 
-subtle border glow
+The application is designed for:
 
-slight lift
+- Desktop
+- Tablet
+- Mobile
 
-smooth icon movement
+The interface includes:
 
-On click:
+- Responsive layouts
+- Mobile navigation
+- Loading states
+- Error states
+- Empty states
+- Touch-friendly controls
 
-smoothly scroll to the Discover Stories section
+---
 
-Do not use aggressive button animations.
+# 🛠️ Technology Stack
 
-6. SCROLL-BASED STORY EXPERIENCE
+## Frontend
 
-The entire landing page should feel like a story unfolding as the user scrolls.
+- React
+- TypeScript
+- Vite
+- TanStack Router
 
-Add subtle scroll-reveal animations.
+## Backend
 
-When sections enter the viewport:
+- Supabase
+- PostgreSQL
+- Supabase Authentication
+- Supabase Row Level Security (RLS)
+- Supabase Realtime
 
-heading fades upward
+## Development Tools
 
-description appears shortly afterward
+- Git
+- GitHub
+- VS Code
+- Node.js / npm
 
-cards stagger into view
+---
 
-images softly scale from 0.96 → 1
+# 🗄️ Database
 
-decorative elements move subtly
+NovelNest uses Supabase PostgreSQL as its main database.
 
-Do NOT animate everything simultaneously.
+Important tables include:
 
-Create a natural sequence.
-
-7. DISCOVER STORIES — INTERACTIVE NOVEL CARDS
-
-The current novel cards look beautiful but static.
-
-Make each card interactive.
-
-On hover:
-
-card gently lifts
-
-book cover slightly zooms
-
-shadow becomes deeper
-
-a subtle glow appears around the card
-
-title/metadata transitions smoothly
-
-the card should feel like a physical book being picked up
-
-Add a very subtle 3D tilt/parallax effect based on mouse position.
-
-Keep it minimal and elegant.
-
-When a user clicks a novel card:
-
-show a smooth transition
-
-open the Novel Details experience/page
-
-Do not use an abrupt page change if a smooth transition can be used.
-
-8. BOOK COVER HOVER EFFECT
-
-When hovering over a book cover:
-
-image should slightly zoom
-
-add subtle light reflection
-
-title area remains readable
-
-do not distort the cover
-
-The effect should resemble light moving across the cover of a physical book.
-
-9. SHARE YOUR THOUGHTS — LIVE SOCIAL INTERACTION
-
-The sample post card should feel interactive.
-
-When hovering over the post:
-
-subtle lift
-
-slightly stronger shadow
-
-smooth border highlight
-
-Make the Like button functional visually.
-
-When clicking Like:
-
-heart should animate
-
-heart should briefly scale/pop
-
-liked state should change
-
-like count should increase
-
-When clicking Comment:
-
-smoothly expand/open the comments interface
-
-The interactions can still use mock data at this stage.
-
-10. CONNECT WITH READERS
-
-Make reader cards interactive.
-
-On hover:
-
-profile avatar gently scales
-
-card lifts
-
-subtle glow appears
-
-Follow button becomes more prominent
-
-When clicking Follow:
-
-Change:
-
-+ Follow
-
-to:
-
-✓ Following
-
-with a smooth transition.
-
-Update the follower count visually using mock state.
-
-11. READING SOULMATES — MAKE IT SPECIAL
-
-The Reading Soulmates section should feel more visually distinctive.
-
-Keep the current cards but add:
-
-soft floating animation
-
-subtle heart glow
-
-animated percentage appearance
-
-shared-interest tags that fade in sequentially
-
-For example:
-
-87%
-
-should animate from:
-
-0% → 87%
-
-when the card enters the viewport.
-
-Do this only once.
-
-When hovering over a soulmate card:
-
-card lifts
-
-percentage gets a subtle glow
-
-shared interests become slightly emphasized
-
-12. READING COMMUNITY
-
-The Reading Community section should look like an active conversation.
-
-Animate the conversation bubbles when the section enters the viewport.
-
-For example:
-
-Ayesha's message appears first.
-
-Then Sara's.
-
-Then Ali's.
-
-Use small staggered delays.
-
-The avatars should subtly appear with each message.
-
-Do not make the messages continuously loop.
-
-The user should feel like they are watching a real discussion unfold.
-
-13. NAVIGATION INTERACTIONS
-
-Improve the navbar.
-
-When hovering over:
-
-Explore Stories
-
-Login
-
-Join NovelNest
-
-Use subtle underline/glow/position transitions.
-
-The navbar should slightly change appearance when the user scrolls:
-
-At top:
-
-transparent/overlay style
-
-After scrolling:
-
-slightly stronger background
-
-subtle blur
-
-soft shadow
-
-Keep it elegant.
-
-14. PAGE TRANSITIONS
-
-Add smooth transitions between major sections/pages where appropriate.
-
-Avoid flashy transitions.
-
-Use:
-
-fade
-
-slight slide
-
-blur-to-sharp
-
-subtle scale
-
-The transition should feel like turning a page in a story.
-
-15. FINAL CTA SECTION
-
-The current final quote:
-
-"Your next story might introduce you to your next friend."
-
-is excellent.
-
-Make this section more cinematic.
-
-Add:
-
-slowly moving particles
-
-subtle ambient glow
-
-gentle background movement
-
-text fade/reveal
-
-button hover animation
-
-The quote should appear elegantly as the user reaches the section.
-
-Do not continuously animate the quote.
-
-16. MICRO-INTERACTIONS
-
-Add small interactions throughout the website:
-
-buttons respond naturally to hover
-
-links have elegant transitions
-
-cards have depth
-
-icons animate subtly
-
-hearts animate when liked
-
-follow buttons transition smoothly
-
-search input gets a soft focus effect
-
-badges have very subtle motion
-
-images have smooth hover transitions
-
-Every interaction should feel intentional.
-
-17. IMPORTANT — PERFORMANCE
-
-Animations must remain smooth.
-
-Prefer CSS transforms, opacity, and efficient animation techniques.
-
-Avoid heavy continuous JavaScript animations.
-
-Do not create excessive DOM animations.
-
-Respect:
-
-prefers-reduced-motion
-
-If the user prefers reduced motion, significantly reduce or disable decorative animations while keeping the application fully usable.
-
-18. MOBILE EXPERIENCE
-
-On mobile:
-
-disable mouse parallax
-
-keep ambient floating animations subtle
-
-maintain smooth card interactions
-
-make buttons touch-friendly
-
-preserve the hero text animation
-
-maintain readable typography
-
-prevent horizontal scrolling
-
-make the novel cards swipe/scroll naturally where appropriate
-
-Do not simply shrink the desktop design.
-
-19. DO NOT CHANGE THESE THINGS
-
-Keep the current:
-
-NovelNest branding
-
-tagline
-
-overall color palette
-
-literary visual identity
-
-existing content sections
-
-novel examples
-
-overall page structure
-
-elegant typography
-
-cream/navy/gold visual direction
-
-Do not turn this into a completely different design.
-
-This is an interaction and animation enhancement, not a redesign.
-
-20. FINAL EXPERIENCE
-
-After this upgrade, the visitor experience should feel like:
-
-The page opens.
-
-The NovelNest title softly appears.
-
-"Enter a World of Stories and Connections." reveals word-by-word.
-
-The open book subtly moves and feels alive.
-
-Floating literary particles create depth.
-
-User scrolls.
-
-Sections reveal themselves naturally.
-
-Novel cards respond to the cursor.
-
-Reader cards react to interaction.
-
-Likes and follows have satisfying feedback.
-
-Reading Soulmates feels dynamic.
-
-Community discussion unfolds naturally.
-
-The final quote appears cinematically.
-
-The overall feeling should be:
-
-"I am entering a living world of books and readers."
-
-Not:
-
-"I am looking at a static landing page."
-
-Keep the experience elegant, premium, literary, modern, and fast.
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/18950a98-aff9-4185-84ec-4efb574fc380).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+```text
+profiles
+posts
+likes
+comments
+follows
+notifications
+novels
+reviews
+reading_list
 
 ## Development
 

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   AlertCircle,
+  ArrowLeft,
   BookOpen,
   Check,
   Loader2,
@@ -392,7 +393,17 @@ function ReaderPage() {
   return (
     <div className="min-h-screen">
       <SiteHeader />
-      <main className="mx-auto max-w-3xl px-5 py-16">
+      <main className="mx-auto max-w-3xl px-5 py-12">
+        {/* ── Top Back Navigation ── */}
+        <div className="mb-6">
+          <Link
+            to="/readers"
+            className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeft className="size-4" /> Back to Readers
+          </Link>
+        </div>
+
         {/* ── Profile header ─────────────────────────────────── */}
         <Reveal className="flex flex-wrap items-start gap-5">
           <BigAvatar profile={profile} />

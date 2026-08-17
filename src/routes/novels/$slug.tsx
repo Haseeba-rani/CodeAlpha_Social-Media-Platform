@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import {
   AlertCircle,
+  ArrowLeft,
   BookOpen,
   Check,
   Edit3,
@@ -356,7 +357,17 @@ function NovelDetailPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader />
-      <main className="mx-auto max-w-5xl px-5 py-16">
+      <main className="mx-auto max-w-5xl px-5 py-12">
+        {/* ── Top Back Navigation ── */}
+        <div className="mb-6">
+          <Link
+            to="/novels"
+            className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeft className="size-4" /> Back to Library
+          </Link>
+        </div>
+
         {/* ── Novel Overview ─────────────────────────────────── */}
         <div className="grid gap-10 md:grid-cols-[280px_1fr]">
           {/* Cover with 3D shadow & genre pill */}
@@ -437,7 +448,7 @@ function NovelDetailPage() {
                 <button
                   type="button"
                   onClick={() => setIsFormOpen(true)}
-                  className="inline-flex h-11 items-center gap-2 rounded-xl border border-gold/50 px-6 text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 hover:border-gold hover:bg-gold/15"
+                  className="inline-flex h-11 cursor-pointer items-center gap-2 rounded-xl border border-gold/50 px-6 text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 hover:border-gold hover:bg-gold/15"
                 >
                   <PenLine className="size-4 text-gold" />
                   Write a review
@@ -446,7 +457,7 @@ function NovelDetailPage() {
 
               <Link
                 to="/novels"
-                className="inline-flex h-11 items-center rounded-xl border border-border bg-secondary/70 px-6 text-sm font-medium transition-all duration-300 hover:bg-secondary"
+                className="inline-flex h-11 cursor-pointer items-center rounded-xl border border-border bg-secondary/70 px-6 text-sm font-medium transition-all duration-300 hover:bg-secondary"
               >
                 Back to library
               </Link>
@@ -470,7 +481,7 @@ function NovelDetailPage() {
               <button
                 type="button"
                 onClick={() => setIsFormOpen(true)}
-                className="inline-flex h-10 items-center gap-2 rounded-xl bg-gold px-5 text-xs font-medium text-gold-foreground shadow-page transition-all duration-300 hover:-translate-y-0.5 hover:shadow-glow"
+                className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-xl bg-gold px-5 text-xs font-medium text-gold-foreground shadow-page transition-all duration-300 hover:-translate-y-0.5 hover:shadow-glow"
               >
                 <PenLine className="size-3.5" />
                 Write a review
@@ -493,7 +504,7 @@ function NovelDetailPage() {
                     <button
                       type="button"
                       onClick={handleCancelEdit}
-                      className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+                      className="rounded-full cursor-pointer p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
                     >
                       <X className="size-4" />
                     </button>
@@ -532,7 +543,7 @@ function NovelDetailPage() {
                         type="button"
                         onClick={handleCancelEdit}
                         disabled={submitting}
-                        className="inline-flex h-10 items-center rounded-xl border border-border px-5 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                        className="inline-flex h-10 cursor-pointer items-center rounded-xl border border-border px-5 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
                       >
                         Cancel
                       </button>
@@ -566,7 +577,7 @@ function NovelDetailPage() {
                 </p>
                 <Link
                   to="/login"
-                  className="mt-4 inline-flex h-9 items-center rounded-xl bg-midnight-gradient px-6 text-xs font-medium text-primary-foreground shadow-page transition-all duration-300 hover:-translate-y-0.5 hover:shadow-glow"
+                  className="mt-4 inline-flex h-9 cursor-pointer items-center rounded-xl bg-midnight-gradient px-6 text-xs font-medium text-primary-foreground shadow-page transition-all duration-300 hover:-translate-y-0.5 hover:shadow-glow"
                 >
                   Sign in to review
                 </Link>
@@ -600,7 +611,7 @@ function NovelDetailPage() {
                   <button
                     type="button"
                     onClick={loadReviews}
-                    className="mt-3 inline-flex h-8 items-center rounded-lg border border-wine/40 px-3 text-xs font-medium text-wine hover:bg-wine/10"
+                    className="mt-3 inline-flex h-8 cursor-pointer items-center rounded-lg border border-wine/40 px-3 text-xs font-medium text-wine hover:bg-wine/10"
                   >
                     Try again
                   </button>
@@ -637,7 +648,7 @@ function NovelDetailPage() {
                     <header className="flex items-start justify-between gap-3">
                       <div className="flex items-start gap-3">
                         {username ? (
-                          <Link to="/readers/$handle" params={{ handle: username }}>
+                          <Link to="/readers/$handle" params={{ handle: username }} className="cursor-pointer">
                             <ReviewerAvatar profile={rev.profiles} />
                           </Link>
                         ) : (
@@ -650,7 +661,7 @@ function NovelDetailPage() {
                               <Link
                                 to="/readers/$handle"
                                 params={{ handle: username }}
-                                className="font-display text-lg text-foreground hover:text-wine transition-colors"
+                                className="font-display text-lg text-foreground hover:text-wine transition-colors cursor-pointer"
                               >
                                 {authorName}
                               </Link>
@@ -679,7 +690,7 @@ function NovelDetailPage() {
                             type="button"
                             onClick={() => handleStartEdit(rev)}
                             aria-label="Edit review"
-                            className="inline-flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                            className="inline-flex size-8 cursor-pointer items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                           >
                             <Edit3 className="size-3.5" />
                           </button>
@@ -687,7 +698,7 @@ function NovelDetailPage() {
                             type="button"
                             onClick={() => handleDeleteReview(rev.id)}
                             aria-label="Delete review"
-                            className="inline-flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-wine/10 hover:text-wine"
+                            className="inline-flex size-8 cursor-pointer items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-wine/10 hover:text-wine"
                           >
                             <Trash2 className="size-3.5" />
                           </button>

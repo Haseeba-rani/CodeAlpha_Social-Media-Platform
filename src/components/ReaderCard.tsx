@@ -185,7 +185,7 @@ export function ReaderCard({ reader, currentUserId, initiallyFollowing }: Reader
         <Link
           to="/readers/$handle"
           params={{ handle: reader.username }}
-          className="inline-flex h-8 flex-1 items-center justify-center rounded-md border border-gold/50 px-3 text-xs font-medium transition-all duration-300 hover:border-gold hover:bg-gold/15"
+          className="inline-flex h-8 flex-1 cursor-pointer items-center justify-center rounded-md border border-gold/50 px-3 text-xs font-medium transition-all duration-300 hover:border-gold hover:bg-gold/15"
         >
           View Profile
         </Link>

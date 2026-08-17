@@ -42,7 +42,7 @@ export function NovelCard({ novel }: { novel: Novel }) {
       <Link
         to="/novels/$slug"
         params={{ slug: novel.slug }}
-        className="group card-lift block rounded-2xl border border-border bg-card p-3 transition-all duration-500 hover:border-gold/60 hover:shadow-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="group card-lift block cursor-pointer rounded-2xl border border-border bg-card p-3 transition-all duration-500 hover:border-gold/60 hover:shadow-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         style={{
           transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
           transformStyle: "preserve-3d",
