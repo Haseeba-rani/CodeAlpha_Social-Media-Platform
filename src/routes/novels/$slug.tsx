@@ -295,7 +295,8 @@ function NovelDetailPage() {
       setSubmitting(false);
 
       if (error) {
-        toast.error("Couldn't update your review. Please try again.");
+        console.error("[NovelNest] Review update error:", error);
+        toast.error("Could not update review. Please try again.");
         return;
       }
 
@@ -314,10 +315,11 @@ function NovelDetailPage() {
       setSubmitting(false);
 
       if (error) {
+        console.error("[NovelNest] Review insert error:", error);
         if (error.code === "23505") {
           toast.error("You have already reviewed this novel. You can edit your existing review.");
         } else {
-          toast.error("Couldn't post your review. Please try again.");
+          toast.error("Could not publish review. Please try again.");
         }
         return;
       }

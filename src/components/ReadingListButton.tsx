@@ -1,7 +1,8 @@
-import { Plus, Check } from "lucide-react";
+import { Plus, Check, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { addToReadingList, removeFromReadingList, getReadingList } from "@/lib/reading-list.functions";
 import { useAuth } from "@/lib/auth";
 
@@ -24,18 +25,32 @@ export function ReadingListButton({ novelId }: { novelId: string }) {
 
   const addMutation = useMutation({
     mutationFn: () => addItem({ data: { novelId } }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["reading-list"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["reading-list"] });
+      toast.success("Saved to your reading list!");
+    },
+    onError: (err) => {
+      console.error("[ReadingList] Failed to add novel to reading list:", err);
+      toast.error(err instanceof Error ? err.message : "Could not save to reading list. Please try again.");
+    },
   });
 
   const removeMutation = useMutation({
     mutationFn: () => removeItem({ data: { novelId } }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["reading-list"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["reading-list"] });
+      toast.success("Removed from your reading list.");
+    },
+    onError: (err) => {
+      console.error("[ReadingList] Failed to remove novel from reading list:", err);
+      toast.error(err instanceof Error ? err.message : "Could not remove from reading list. Please try again.");
+    },
   });
 
   const handleClick = () => {
     if (!user) {
       setShowLoginHint(true);
-      setTimeout(() => setShowLoginHint(false), 2000);
+      setTimeout(() => setShowLoginHint(false), 2500);
       return;
     }
     if (isSaved) {
@@ -58,7 +73,11 @@ export function ReadingListButton({ novelId }: { novelId: string }) {
             : "bg-gold text-gold-foreground shadow-page hover:shadow-glow"
         }`}
       >
-        {isSaved ? (
+        {busy ? (
+          <>
+            <Loader2 className="size-4 animate-spin" /> Saving...
+          </>
+        ) : isSaved ? (
           <>
             <Check className="size-4" /> Saved
           </>
@@ -74,3 +93,4 @@ export function ReadingListButton({ novelId }: { novelId: string }) {
     </div>
   );
 }
+

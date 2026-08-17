@@ -28,7 +28,10 @@ export const addToReadingList = createServerFn({ method: "POST" })
       user_id: context.userId,
       novel_id: data.novelId,
     });
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[NovelNest] Error adding to reading list:", error);
+      throw new Error("Could not save to reading list. Please try again.");
+    }
     return { success: true };
   });
 
@@ -41,6 +44,10 @@ export const removeFromReadingList = createServerFn({ method: "POST" })
       .delete()
       .eq("user_id", context.userId)
       .eq("novel_id", data.novelId);
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[NovelNest] Error removing from reading list:", error);
+      throw new Error("Could not remove from reading list. Please try again.");
+    }
     return { success: true };
   });
+
